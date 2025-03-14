@@ -1,6 +1,7 @@
 from rooms import get_rooms_and_rates
 from reservations import make_reservation, cancel_reservation, search_reservations
 from revenue import get_revenue
+from database import populate_lab7_tables
 
 def main():
     while True:
@@ -27,4 +28,5 @@ def main():
             break
 
 if __name__ == "__main__":
+    populate_lab7_tables()
     main()

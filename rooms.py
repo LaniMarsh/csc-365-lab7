@@ -10,14 +10,18 @@ def get_rooms_and_rates():
 
     query = """
     SELECT r.*, 
-           COUNT(res.CODE) / 180 AS popularity_score, 
-           (SELECT MIN(CheckIn) FROM lab7_reservations WHERE Room = r.RoomCode AND CheckIn > CURDATE()) AS next_checkin,
-           DATEDIFF(Checkout, CheckIn) AS last_stay_duration,
-           Checkout AS last_checkout
+       COUNT(res.CODE) / 180 AS popularity_score, 
+       (SELECT MIN(CheckIn) 
+        FROM lab7_reservations 
+        WHERE Room = r.RoomCode 
+          AND CheckIn > CURDATE()) AS next_checkin,
+       MAX(DATEDIFF(Checkout, CheckIn)) AS last_stay_duration, 
+       MAX(Checkout) AS last_checkout
     FROM lab7_rooms r
-    LEFT JOIN lab7_reservations res ON r.RoomCode = res.Room
+    LEFT JOIN lab7_reservations res 
+        ON r.RoomCode = res.Room
     WHERE CheckIn >= DATE_SUB(CURDATE(), INTERVAL 180 DAY)
-    GROUP BY r.RoomCode
+    GROUP BY r.RoomCode, r.RoomName, r.Beds, r.RoomCode
     ORDER BY popularity_score DESC;
     """
 

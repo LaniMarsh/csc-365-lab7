@@ -77,9 +77,9 @@ def search_reservations():
 
     cursor = conn.cursor(dictionary=True)
 
-    first_name = input("First Name (or leave blank): ")
-    last_name = input("Last Name (or leave blank): ")
-    room_code = input("Room Code (or leave blank): ")
+    first_name = input("First Name (or leave blank): ").strip()
+    last_name = input("Last Name (or leave blank): ").strip()
+    room_code = input("Room Code (or leave blank): ").strip()
 
     query = """
     SELECT * FROM lab7_reservations 
@@ -87,8 +87,14 @@ def search_reservations():
       AND (LastName LIKE %s OR %s = '') 
       AND (Room LIKE %s OR %s = '');
     """
-    cursor.execute(query, (first_name + "%", first_name, last_name + "%", last_name, room_code, room_code))
+    cursor.execute(query, (f"%{first_name}%", first_name, f"%{last_name}%", last_name, f"%{room_code}%", room_code))
     results = cursor.fetchall()
 
-    for res in results:
-        print(f"{res['CODE']} - {res['FirstName']} {res['LastName']} | Room: {res['Room']}")
+    if not results:
+        print("No reservations found.")
+    else:
+        for res in results:
+            print(f"{res['CODE']} - {res['FirstName']} {res['LastName']} | Room: {res['Room']} | Check-in: {res['CheckIn']} | Check-out: {res['Checkout']} | Rate: ${res['Rate']}")
+
+    cursor.close()
+    conn.close()
