@@ -1,14 +1,18 @@
 # csc-365-lab7
 
 Group Members - 
+
 Lani Marsh
+
 Lambert Zhang
 
 
 To run the program simply run main.py
 
 
-##Git Log
+Git Log
+
+
 commit 0b79e3ef011d27848ae2896378ed3cc791d6c513 (HEAD -> main, origin/main, origin/HEAD)
 Author: LaniMarsh <lmarsh12@calpoly.edu>
 Date:   Fri Mar 14 22:10:30 2025 -0700
