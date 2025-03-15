@@ -67,7 +67,7 @@ def create_lab7_tables():
         conn.commit()
         conn.close()
 
-    populate_lab7_tables()
+    # populate_lab7_tables()
 
 
 def populate_lab7_tables():

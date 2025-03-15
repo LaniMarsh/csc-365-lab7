@@ -1,4 +1,5 @@
 from database import connect_db
+from datetime import datetime
 
 def cancel_reservation():
     conn = connect_db()
@@ -87,10 +88,15 @@ def make_reservation():
         cursor.execute(insert_query, (new_code, selected_room['RoomCode'], checkin, checkout, selected_room['basePrice'], last_name, first_name, adults, kids))
         conn.commit()
 
+        checkin_int = datetime.strptime(checkin, "%Y-%m-%d")
+        checkout_int = datetime.strptime(checkout, "%Y-%m-%d")
+
+        total_nights = (checkout_int - checkin_int).days
+
         print(f"\n Reservation confirmed for {first_name} {last_name} in {selected_room['RoomName']} ({selected_room['bedType']}).")
         print(f"Check-in: {checkin}, Check-out: {checkout}")
         print(f"Guests: {adults} Adults, {kids} Kids")
-        print(f"Total cost: ${selected_room['basePrice'] * ((checkout - checkin).days)} (excluding weekend surcharge)")
+        print(f"Total cost: ${selected_room['basePrice'] * total_nights} (excluding weekend surcharge)")
 
     except mysql.connector.Error as err:
         print(f"Database error: {err}")
